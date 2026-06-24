@@ -1,0 +1,409 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Voos Executiva Europa Eua",
+  "schemaVersion": 1,
+  "description": "Painel ao vivo de voos ida e volta em classe executiva (business) saindo de São Paulo para 12 destinos na Europa e EUA. Preços em BRL via Kiwi, melhor preço por destino, visual premium navy + dourado.",
+  "mcpTools": [
+    "mcp__0af5142b-3e9a-40b7-92f0-9da8986b0400__search-flight"
+  ],
+  "mcpServerNames": [
+    "Kiwi.com"
+  ]
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voos Executiva · SP → Europa & EUA</title>
+<style>
+  :root {
+    color-scheme: light;
+    --navy: #0f1b3d;
+    --navy-2: #16244f;
+    --gold: #b8924a;
+    --gold-soft: #f3ead7;
+    --ink: #1a2034;
+    --muted: #6b7388;
+    --line: #e6e2d8;
+    --bg: #f6f4ef;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.45;
+  }
+  .header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+  }
+  .crest {
+    width: 34px; height: 34px; border-radius: 8px; flex: none;
+    background: linear-gradient(140deg, var(--navy) 0%, var(--navy-2) 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 700; font-size: 16px;
+    box-shadow: inset 0 0 0 1px rgba(184,146,74,.5);
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px; margin: 0; letter-spacing: .01em; color: var(--navy);
+  }
+  .kicker { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  .sub { color: var(--muted); font-size: 12.5px; margin: 6px 0 16px; }
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
+    box-shadow: 0 1px 2px rgba(15,27,61,.04);
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 10.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  select, button { font-size: 13px; font-family: inherit; }
+  select {
+    padding: 8px 10px; border: 1px solid #d8d3c6; border-radius: 9px; background: #fff; color: var(--ink); min-width: 92px;
+  }
+  select:focus { outline: none; border-color: var(--gold); }
+  button.primary {
+    padding: 9px 20px; border: none; border-radius: 9px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; font-weight: 600; cursor: pointer;
+    letter-spacing: .02em;
+  }
+  button.primary:hover { background: var(--navy-2); }
+  button.primary:disabled { background: #9aa1b5; cursor: default; }
+  .region-tabs { display: flex; gap: 7px; margin-bottom: 16px; }
+  .region-tabs button {
+    padding: 7px 16px; border: 1px solid #d8d3c6; background: #fff; border-radius: 999px; cursor: pointer; color: #50586c; font-weight: 600;
+  }
+  .region-tabs button.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .status { font-size: 12.5px; color: var(--muted); margin-bottom: 14px; min-height: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 9px;
+    box-shadow: 0 1px 2px rgba(15,27,61,.04);
+    position: relative; overflow: hidden;
+  }
+  .card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); opacity: .0; transition: opacity .2s; }
+  .card.best::before { opacity: 1; }
+  .card.loading { opacity: .55; }
+  .card.best { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset, 0 4px 14px rgba(184,146,74,.12); }
+  .badge-best {
+    display: none; position: absolute; top: 12px; right: 14px;
+    font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--navy); background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 999px; padding: 2px 8px;
+  }
+  .card.best .badge-best { display: inline-block; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .city { font-size: 16px; font-weight: 700; color: var(--navy); font-family: Georgia, serif; }
+  .iata { font-size: 11px; color: #a39a85; font-weight: 600; font-family: -apple-system, sans-serif; }
+  .price { font-size: 19px; font-weight: 800; color: var(--navy); white-space: nowrap; }
+  .price.none { color: #b0aa9a; font-size: 13px; font-weight: 600; }
+  .price-tag { display: block; font-size: 9.5px; font-weight: 700; color: var(--gold); text-align: right; letter-spacing: .04em; text-transform: uppercase; }
+  .dir { display: inline-block; font-size: 10px; font-weight: 700; color: var(--navy); background: #eaeef7; border-radius: 4px; padding: 0 5px; margin-right: 4px; vertical-align: 1px; }
+  .dir.vol { color: #8a6a25; background: var(--gold-soft); }
+  .opt-legs { display: flex; flex-direction: column; gap: 2px; }
+  .meta { font-size: 12.5px; color: #50586c; }
+  .meta .dim { color: #a39a85; }
+  .meta.dim { color: #a39a85; }
+  .pill { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; background: #f0ede5; color: #50586c; margin-right: 4px; }
+  .pill.direct { background: var(--gold-soft); color: #8a6a25; font-weight: 600; }
+  .row-actions { display: flex; gap: 10px; align-items: center; margin-top: 2px; }
+  a.book { font-size: 12.5px; color: var(--navy); text-decoration: none; font-weight: 700; }
+  a.book:hover { color: var(--gold); }
+  .toggle { font-size: 12px; color: var(--muted); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+  .options { margin-top: 4px; border-top: 1px solid #f0ede5; padding-top: 9px; display: none; flex-direction: column; gap: 9px; }
+  .options.open { display: flex; }
+  .opt { font-size: 12px; display: flex; justify-content: space-between; gap: 8px; }
+  .opt .legs { color: #50586c; }
+  .footnote { margin-top: 18px; font-size: 11.5px; color: #a39a85; border-top: 1px solid var(--line); padding-top: 12px; }
+  .spinner { display: inline-block; width: 11px; height: 11px; border: 2px solid #ddd6c6; border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -1px; margin-right: 5px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="crest">✈</div>
+    <div>
+      <div class="kicker">Classe Executiva</div>
+      <h1>São Paulo → Europa &amp; EUA</h1>
+    </div>
+  </div>
+  <div class="sub">Ida e volta em <strong>business class</strong>, somente voos <strong>sem escalas</strong> · preços em BRL · dados ao vivo via Kiwi. Os melhores preços por destino aparecem abaixo.</div>
+
+  <div class="controls">
+    <div class="field">
+      <label>Origem</label>
+      <select id="origin">
+        <option value="GRU">São Paulo · Guarulhos (GRU)</option>
+        <option value="VCP">Campinas (VCP)</option>
+        <option value="SAO">Qualquer SP (GRU+VCP+CGH)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Saída</label>
+      <select id="dep"></select>
+    </div>
+    <div class="field">
+      <label>Duração</label>
+      <select id="len">
+        <option value="10">10 dias</option>
+        <option value="11">11 dias</option>
+        <option value="12" selected>12 dias</option>
+        <option value="13">13 dias</option>
+        <option value="14">14 dias</option>
+        <option value="15">15 dias</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Cabine</label>
+      <select id="cabin">
+        <option value="C" selected>Executiva</option>
+        <option value="F">Primeira</option>
+        <option value="W">Premium Economy</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Flex. datas</label>
+      <select id="flex">
+        <option value="0">Exata</option>
+        <option value="1">± 1 dia</option>
+        <option value="2" selected>± 2 dias</option>
+        <option value="3">± 3 dias</option>
+      </select>
+    </div>
+    <button class="primary" id="go">Buscar voos</button>
+  </div>
+
+  <div class="region-tabs">
+    <button data-region="all" class="active">Todos</button>
+    <button data-region="EU">Europa</button>
+    <button data-region="US">EUA</button>
+  </div>
+
+  <div class="status" id="status"></div>
+  <div class="grid" id="grid"></div>
+
+  <div class="footnote">
+    Apenas voos sem escalas (diretos na ida e na volta) em classe executiva (ou cabine selecionada). Destinos sem rota direta aparecem como "sem voo direto". Retorno calculado como saída + duração escolhida. Preços e disponibilidade mudam constantemente — confirme tudo no link de reserva antes de comprar. Clique em <em>Buscar voos</em> ou no botão de recarregar para atualizar.
+  </div>
+
+<script>
+const DESTINATIONS = [
+  { region:"EU", city:"Lisboa",      code:"LIS" },
+  { region:"EU", city:"Madri",       code:"MAD" },
+  { region:"EU", city:"Paris",       code:"PAR" },
+  { region:"EU", city:"Londres",     code:"LON" },
+  { region:"EU", city:"Roma",        code:"ROM" },
+  { region:"EU", city:"Barcelona",   code:"BCN" },
+  { region:"EU", city:"Amsterdã",    code:"AMS" },
+  { region:"EU", city:"Frankfurt",   code:"FRA" },
+  { region:"US", city:"Nova York",   code:"NYC" },
+  { region:"US", city:"Miami",       code:"MIA" },
+  { region:"US", city:"Orlando",     code:"MCO" },
+  { region:"US", city:"Los Angeles", code:"LAX" },
+];
+
+let currentRegion = "all";
+let results = {};
+
+const grid = document.getElementById("grid");
+const statusEl = document.getElementById("status");
+
+const depSel = document.getElementById("dep");
+for (let d = 1; d <= 15; d++) {
+  const dd = String(d).padStart(2,"0");
+  const o = document.createElement("option");
+  o.value = `${dd}/07/2026`;
+  o.textContent = `${dd}/07/2026`;
+  if (d === 5) o.selected = true;
+  depSel.appendChild(o);
+}
+
+const CABIN_LABEL = { C:"executiva", F:"primeira classe", W:"premium economy" };
+
+function addDays(ddmmyyyy, days){
+  const [d,m,y] = ddmmyyyy.split("/").map(Number);
+  const dt = new Date(Date.UTC(y, m-1, d));
+  dt.setUTCDate(dt.getUTCDate()+days);
+  const nd = String(dt.getUTCDate()).padStart(2,"0");
+  const nm = String(dt.getUTCMonth()+1).padStart(2,"0");
+  return `${nd}/${nm}/${dt.getUTCFullYear()}`;
+}
+function fmtDur(sec){
+  const h = Math.floor(sec/3600), mn = Math.round((sec%3600)/60);
+  return mn ? `${h}h${String(mn).padStart(2,"0")}` : `${h}h`;
+}
+function fmtTime(localStr){
+  if(!localStr) return "";
+  const [date,time] = localStr.split("T");
+  const [y,m,d] = date.split("-");
+  return `${d}/${m} ${time.slice(0,5)}`;
+}
+function fmtPrice(v){ return "R$ " + Number(v).toLocaleString("pt-BR"); }
+function stopsLabel(f){
+  const out = (f.layovers||[]).length;
+  const back = (f.return && f.return.layovers ? f.return.layovers.length : 0);
+  const tot = out + back;
+  if (tot === 0) return '<span class="pill direct">Direto</span>';
+  return `<span class="pill">${tot} escala${tot>1?"s":""}</span>`;
+}
+function stopsLabelOne(leg){
+  const tot = (leg.layovers||[]).length;
+  if (tot === 0) return '<span class="pill direct">Direto</span>';
+  return `<span class="pill">${tot} escala${tot>1?"s":""}</span>`;
+}
+function legChain(f){
+  let s = f.flyFrom;
+  (f.layovers||[]).forEach(l => s += " → " + (l.cityCode||l.at));
+  s += " → " + f.flyTo;
+  return s;
+}
+function unwrap(r){
+  if (!r || r.isError) return null;
+  let data = r.structuredContent;
+  if (data == null && r.content && r.content[0] && r.content[0].text){
+    try { data = JSON.parse(r.content[0].text); } catch(e){ return null; }
+  }
+  return Array.isArray(data) ? data : (data && Array.isArray(data.results) ? data.results : null);
+}
+function isNonstop(f){
+  const outDirect = (f.layovers||[]).length === 0;
+  const retDirect = !f.return || (f.return.layovers||[]).length === 0;
+  return outDirect && retDirect;
+}
+function cardId(code){ return "card-"+code; }
+
+function renderSkeleton(){
+  grid.innerHTML = "";
+  DESTINATIONS.forEach(dest => {
+    const div = document.createElement("div");
+    div.className = "card loading";
+    div.id = cardId(dest.code);
+    div.dataset.region = dest.region;
+    div.innerHTML = `<div class="card-head"><span class="city">${dest.city} <span class="iata">${dest.code}</span></span><span class="price none"><span class="spinner"></span></span></div><div class="meta dim">buscando…</div>`;
+    grid.appendChild(div);
+  });
+  applyRegionFilter();
+}
+
+function renderCard(dest){
+  const div = document.getElementById(cardId(dest.code));
+  if (!div) return;
+  div.classList.remove("loading");
+  const list = (results[dest.code]||[]).slice().sort((a,b)=>a.price-b.price);
+  if (!list.length){
+    div.innerHTML = `<div class="badge-best">Melhor preço</div><div class="card-head"><span class="city">${dest.city} <span class="iata">${dest.code}</span></span><span class="price none">sem voo direto</span></div><div class="meta dim">Nenhum voo sem escalas para estas datas.</div>`;
+    return;
+  }
+  const best = list[0];
+  const optsHtml = list.slice(0,5).map(f => `
+    <div class="opt">
+      <div class="opt-legs">
+        <div><span class="dir">Ida</span> ${fmtTime(f.departure.local)} · ${legChain(f)} · ${fmtDur(f.durationInSeconds)}</div>
+        ${f.return ? `<div><span class="dir vol">Volta</span> ${fmtTime(f.return.departure.local)} · ${legChain(f.return)} · ${fmtDur(f.return.durationInSeconds)}</div>` : ``}
+      </div>
+      <a class="book" href="${f.deepLink}" target="_blank" rel="noopener">${fmtPrice(f.price)}</a>
+    </div>`).join("");
+  div.innerHTML = `
+    <div class="badge-best">Melhor preço</div>
+    <div class="card-head">
+      <span class="city">${dest.city} <span class="iata">${dest.code}</span></span>
+      <span class="price">${fmtPrice(best.price)}<span class="price-tag">ida+volta</span></span>
+    </div>
+    <div class="meta"><span class="dir">Ida</span> ${stopsLabel(best)} ${fmtTime(best.departure.local)} → ${fmtTime(best.arrival.local)} · ${fmtDur(best.durationInSeconds)}</div>
+    <div class="meta dim">${legChain(best)}</div>
+    ${best.return ? `
+    <div class="meta"><span class="dir vol">Volta</span> ${stopsLabelOne(best.return)} ${fmtTime(best.return.departure.local)} → ${fmtTime(best.return.arrival.local)} · ${fmtDur(best.return.durationInSeconds)}</div>
+    <div class="meta dim">${legChain(best.return)}</div>` : ``}
+    <div class="row-actions">
+      <a class="book" href="${best.deepLink}" target="_blank" rel="noopener">Reservar →</a>
+      <button class="toggle">ver ${Math.min(5,list.length)} opções</button>
+    </div>
+    <div class="options">${optsHtml}</div>`;
+  const tgl = div.querySelector(".toggle");
+  const opts = div.querySelector(".options");
+  tgl.addEventListener("click", () => {
+    opts.classList.toggle("open");
+    tgl.textContent = opts.classList.contains("open") ? "ocultar opções" : `ver ${Math.min(5,list.length)} opções`;
+  });
+}
+
+function highlightBest(){
+  document.querySelectorAll(".card").forEach(c=>c.classList.remove("best"));
+  let min = Infinity, minCode = null;
+  DESTINATIONS.forEach(dest=>{
+    if (currentRegion!=="all" && dest.region!==currentRegion) return;
+    const list = (results[dest.code]||[]).slice().sort((a,b)=>a.price-b.price);
+    if (list.length && list[0].price < min){ min = list[0].price; minCode = dest.code; }
+  });
+  if (minCode){ const el = document.getElementById(cardId(minCode)); if(el) el.classList.add("best"); }
+}
+
+function applyRegionFilter(){
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display = (currentRegion==="all" || c.dataset.region===currentRegion) ? "" : "none";
+  });
+}
+
+async function searchOne(dest, params){
+  try {
+    const r = await window.cowork.callMcpTool("mcp__0af5142b-3e9a-40b7-92f0-9da8986b0400__search-flight", {
+      flyFrom: params.origin,
+      flyTo: dest.code,
+      departureDate: params.dep,
+      returnDate: params.ret,
+      departureDateFlexRange: params.flex,
+      returnDateFlexRange: params.flex,
+      curr: "BRL",
+      cabinClass: params.cabin,
+      sort: "price",
+      locale: "pt"
+    });
+    results[dest.code] = (unwrap(r) || []).filter(isNonstop);
+  } catch(e){
+    results[dest.code] = [];
+  }
+  renderCard(dest);
+  highlightBest();
+}
+
+async function runSearch(){
+  const origin = document.getElementById("origin").value;
+  const dep = document.getElementById("dep").value;
+  const len = parseInt(document.getElementById("len").value,10);
+  const flex = parseInt(document.getElementById("flex").value,10);
+  const cabin = document.getElementById("cabin").value;
+  const ret = addDays(dep, len);
+  results = {};
+  renderSkeleton();
+  const btn = document.getElementById("go");
+  btn.disabled = true;
+  let done = 0;
+  const params = { origin, dep, ret, flex, cabin };
+  const cl = CABIN_LABEL[cabin] || "executiva";
+  statusEl.innerHTML = `<span class="spinner"></span> Buscando ${DESTINATIONS.length} destinos em ${cl} · saída ${dep}, volta ${ret} (${len} dias)…`;
+  const batchSize = 3;
+  for (let i=0; i<DESTINATIONS.length; i+=batchSize){
+    const batch = DESTINATIONS.slice(i, i+batchSize);
+    await Promise.all(batch.map(async d => { await searchOne(d, params); done++;
+      statusEl.innerHTML = `<span class="spinner"></span> ${done}/${DESTINATIONS.length} destinos em ${cl} · saída ${dep}, volta ${ret} (${len} dias)`; }));
+  }
+  const found = DESTINATIONS.filter(d=>(results[d.code]||[]).length).length;
+  statusEl.innerHTML = `${found} de ${DESTINATIONS.length} destinos com voos em ${cl} · saída ${dep}, volta ${ret} (${len} dias). Dourado = mais barato.`;
+  btn.disabled = false;
+}
+
+document.querySelectorAll(".region-tabs button").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll(".region-tabs button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    currentRegion = b.dataset.region;
+    applyRegionFilter();
+    highlightBest();
+  });
+});
+
+document.getElementById("go").addEventListener("click", runSearch);
+runSearch();
+</script>
+</body>
+</html>
