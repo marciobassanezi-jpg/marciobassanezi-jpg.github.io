@@ -24,6 +24,9 @@
   .kicker{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#a8a29e;margin-bottom:8px;}
   h1{font-size:46px;margin:0;letter-spacing:-.02em;}
   .tagline{color:var(--muted);font-size:14px;margin:8px 0 0;font-style:italic;}
+  .byline{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .byline .rule{width:28px;height:1px;background:var(--line);display:inline-block;}
+  .byline strong{color:var(--ink);font-weight:600;letter-spacing:.18em;}
   .stamp{font-family:system-ui,sans-serif;display:flex;gap:16px;justify-content:center;align-items:center;margin-top:16px;font-size:12px;color:var(--muted);}
   .stamp .sep{color:#d6d3d1;}
   .notice{font-family:system-ui,sans-serif;display:flex;gap:8px;justify-content:center;align-items:center;background:var(--soft);border-radius:6px;padding:8px;margin:12px 0;font-size:12px;color:#57534e;}
@@ -59,7 +62,8 @@
   <header>
     <div class="kicker">Edição da manhã e da tarde</div>
     <h1>Intra-óssea</h1>
-    <p class="tagline">Manchetes do dia · por Marcio Bassanezi</p>
+    <p class="tagline">Manchetes do dia</p>
+    <div class="byline"><span class="rule"></span>por <strong>Marcio Bassanezi</strong><span class="rule"></span></div>
     <div class="stamp"><span id="date"></span><span class="sep">|</span><span id="edition"></span></div>
   </header>
 
