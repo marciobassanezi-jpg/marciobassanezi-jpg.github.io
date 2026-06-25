@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intra-óssea — Manchetes do Dia</title>
-<meta name="description" content="Intra-óssea: jornal pessoal com manchetes diárias de Geral, Medicina e Direito. Edições às 00:00 e 12:00.">
+<meta name="description" content="Intra-óssea: jornal pessoal com manchetes diárias de Geral, Medicina e Direito. Edições às 06:00 e 18:00.">
 <meta name="robots" content="index, follow">
 <!-- Verificação do Google Search Console: troque o conteúdo abaixo pelo código que o Google fornecer -->
 <meta name="google-site-verification" content="COLE_AQUI_SEU_CODIGO_DO_SEARCH_CONSOLE">
 <meta property="og:title" content="Intra-óssea — Manchetes do Dia">
-<meta property="og:description" content="Manchetes diárias de Geral, Medicina e Direito. Edições às 00:00 e 12:00.">
+<meta property="og:description" content="Manchetes diárias de Geral, Medicina e Direito. Edições às 06:00 e 18:00.">
 <meta property="og:type" content="website">
 <style>
   :root{
@@ -57,13 +57,13 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Edição matinal e meio-dia</div>
+    <div class="kicker">Edição da manhã e da tarde</div>
     <h1>Intra-óssea</h1>
     <p class="tagline">Manchetes do dia</p>
     <div class="stamp"><span id="date"></span><span class="sep">|</span><span id="edition"></span></div>
   </header>
 
-  <div class="notice">Atualiza duas vezes por dia · 00:00 e 12:00</div>
+  <div class="notice">Atualiza duas vezes por dia · 06:00 e 18:00</div>
 
   <nav id="filters">
     <button class="filter active" data-f="tudo">Tudo <span class="n">50</span></button>
@@ -130,7 +130,7 @@
     <article data-sec="direito"><div class="item-meta"><span class="tag direito">Direito</span><span class="time">05:20</span></div><h2>Câmara instala grupo de trabalho sobre crimes praticados por misoginia</h2><p class="summary">Colegiado vai debater tipificação e enfrentamento da violência de gênero.</p><div class="foot"><span class="src">Agência Brasil</span><button class="save">Salvar</button></div></article>
   </main>
 
-  <footer>Intra-óssea · 50 manchetes de fontes conhecidas · edições 00:00 e 12:00</footer>
+  <footer>Intra-óssea · 50 manchetes de fontes conhecidas · edições 06:00 e 18:00</footer>
 </div>
 
 <script>
@@ -139,7 +139,7 @@
     var now = new Date();
     var d = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('date').textContent = d.charAt(0).toUpperCase()+d.slice(1);
-    document.getElementById('edition').textContent = 'Edição das ' + (now.getHours() < 12 ? '00:00' : '12:00');
+    document.getElementById('edition').textContent = 'Edição das ' + (now.getHours() >= 6 && now.getHours() < 18 ? '06:00' : '18:00');
   })();
 
   // Filtros
